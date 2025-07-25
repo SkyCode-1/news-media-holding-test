@@ -1,10 +1,10 @@
 import React from 'react';
 import PostsList from '@src/features/posts/ui/posts-list';
 
-function NewsFeedsPage() {
+function PostsFeedsPage() {
   return (
     <PostsList/>
   );
 }
 
-export default NewsFeedsPage;
+export default PostsFeedsPage;

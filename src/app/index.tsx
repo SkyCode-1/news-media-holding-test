@@ -1,10 +1,10 @@
 import Providers from '@src/app/providers';
 import './index.css';
-import NewsFeedsPage from '@src/pages/posts-feeds/ui/news-feeds-page';
+import PostsFeedsPage from '@src/pages/posts-feeds/ui/posts-feeds-page';
 
 function App() {
 
-  return (<Providers><NewsFeedsPage/></Providers>);
+  return (<Providers><PostsFeedsPage/></Providers>);
 }
 
 export default App;

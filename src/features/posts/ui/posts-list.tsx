@@ -1,11 +1,9 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {useGetPostsQuery} from '@src/features/posts/api';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {Divider, List, Skeleton, Spin, Typography} from 'antd';
-import {DislikeOutlined, LikeOutlined } from '@ant-design/icons';
-import IconText from '@src/shared/ui/icon-text/component';
-import PostTags from './post-tags';
+import {Divider, List, Skeleton, Spin} from 'antd';
 import PostsAlert from '@src/features/posts/ui/posts-alert';
+import { PostItem } from '@src/entities/post/ui';
 
 function PostsList() {
   const [skip, setSkip] = useState(0);
@@ -52,19 +50,7 @@ function PostsList() {
           itemLayout={'vertical'}
           dataSource={data.posts}
           renderItem={(item) => (
-            <List.Item key={item.id} actions={[
-              <IconText icon={LikeOutlined} text={String(item.reactions.likes)} key="list-vertical-like-o" />,
-              <IconText icon={DislikeOutlined} text={String(item.reactions.dislikes)} key="list-vertical-star-o" />,
-            ]}>
-              <List.Item.Meta
-                style={{width:'100%'}}
-                title={<Typography.Title ellipsis={{rows: 1}}>{item.title}</Typography.Title>}
-                description={<PostTags tags={item.tags} />}
-              />
-              <Typography.Paragraph ellipsis={{ rows: 3, expandable: false } }>
-                {item.body}
-              </Typography.Paragraph>
-            </List.Item>
+            <PostItem key={item.id} post={item} />
           )}
         />
       </InfiniteScroll>
