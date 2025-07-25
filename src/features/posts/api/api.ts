@@ -1,33 +1,33 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query';
-import {Post} from '@src/entities/post';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {POSTS_LIMIT} from './constants';
+import type {PostsResponse, GetPostsArgs} from './types';
 
-interface GetNewsArgs {
-    page: number;
-    skip: number;
-}
-
-const PostsApi = createApi({
-  reducerPath: 'postsApi',
+const postsApi = createApi({
+  reducerPath: 'post',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://dummyjson.com/' }),
-  endpoints: (build) => ({
-    getPosts: build.query<Post[], GetNewsArgs>({
-      query: ({ page, skip }) => `posts?limit=${page}&skip=${skip}`,
+
+  endpoints: (builder) => ({
+    getPosts: builder.query<PostsResponse, GetPostsArgs>({
+      query: ({ skip }) => `posts?limit=${POSTS_LIMIT}&skip=${skip}`,
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
       merge: (currentCache, newItems, { arg }) => {
-        if (arg.page === 1) {
-          currentCache.articles = newItems.articles;
+        if (arg.skip === 0) {
+          currentCache.posts = newItems.posts;
         } else {
-          currentCache.articles.push(...newItems.articles);
+          currentCache.posts.push(...newItems.posts);
         }
-        currentCache.totalResults = newItems.totalResults; // Обновляем общее количество
+        currentCache.skip = newItems.skip;
+        currentCache.total = newItems.total;
       },
       forceRefetch({ currentArg, previousArg }) {
-        return currentArg?.page !== previousArg?.page;
+        return currentArg?.skip !== previousArg?.skip;
       },
     }),
   })
 });
 
-export const a = PostsApi.endpoints;
+export const { useGetPostsQuery, useLazyGetPostsQuery } = postsApi;
+
+export default postsApi;

@@ -1,1 +1,1 @@
-export {default as NewsFeedsPage} from './ui/news-feeds-page'
+export {default as NewsFeedsPage} from './ui/news-feeds-page';
